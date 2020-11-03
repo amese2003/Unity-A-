@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
 using System;
+using System.Linq;
 
 public class Pathfinding : MonoBehaviour {
 
@@ -31,6 +32,7 @@ public class Pathfinding : MonoBehaviour {
 
         if (startNode.walkable && targetNode.walkable)
         {
+            // List<Node> openSet = new List<Node>();
             Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
             HashSet<Node> closedSet = new HashSet<Node>();
             openSet.Add(startNode);
@@ -38,6 +40,7 @@ public class Pathfinding : MonoBehaviour {
             while (openSet.Count > 0)
             {
                 Node CurrentNode = openSet.RemoveFirst();
+                //openSet.Remove(openSet[0]);
                 closedSet.Add(CurrentNode);
 
                 if(CurrentNode == targetNode)
@@ -51,7 +54,7 @@ public class Pathfinding : MonoBehaviour {
                     if (!neighbour.walkable || closedSet.Contains(neighbour))
                         continue;
 
-                    int newMovementCostToNeighbour = CurrentNode.gCost + GetDistance(CurrentNode, neighbour);
+                    int newMovementCostToNeighbour = CurrentNode.gCost + GetDistance(CurrentNode, neighbour) + neighbour.movePanelty;
 
                     if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                     {
@@ -62,7 +65,8 @@ public class Pathfinding : MonoBehaviour {
 
                         if (!openSet.Contains(neighbour))
                             openSet.Add(neighbour);
-
+                        else
+                            openSet.UpdateItem(neighbour);
                     }
                 }
             }
