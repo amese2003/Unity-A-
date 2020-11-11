@@ -1097,6 +1097,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 651385578}
+  speed: 50
+  turnSpeed: 8
+  turnDst: 5
+  stoppingDst: 20
 --- !u!1 &2112169025
 GameObject:
   m_ObjectHideFlags: 0
